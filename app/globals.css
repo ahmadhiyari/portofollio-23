@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f6f7f3;
+  --surface: #ffffff;
+  --line: #e1e4dc;
+  --ink: #10140f;
+  --muted: #5d665c;
+  --accent: #4f7a0b;
+  --accent-ink: #f8ffe8;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #07090a;
+  --surface: #0f1214;
+  --line: #24282c;
+  --ink: #eef2ee;
+  --muted: #98a2a4;
+  --accent: #c7f568;
+  --accent-ink: #0c1205;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-geist-sans);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(60rem 32rem at 75% -10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+      radial-gradient(40rem 24rem at -10% 30%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: var(--ink);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--line) 65%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--line) 65%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, black 40%, transparent 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--ink) 15%, var(--accent) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Entrance animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(2deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-float {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+.animate-ring {
+  animation: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-up,
+  .animate-float,
+  .animate-ring {
+    animation: none;
+  }
+}
+
+/* Nicer scrollbar in dark mode */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #2b3034;
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3a4045;
+}
